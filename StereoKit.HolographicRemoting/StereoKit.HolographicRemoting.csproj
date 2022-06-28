@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Holographic.Remoting.OpenXr" Version="2.8.0" GeneratePathProperty="true" />
+		<PackageReference Include="StereoKit" Version="0.3.7-preview.2" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetPlatformIdentifier)'=='Windows'">
+		<Content Include="$(PkgMicrosoft_Holographic_Remoting_OpenXr)\build\native\bin\x64\Desktop\*.dll">
+			<Link>%(Filename)%(Extension)</Link>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="$(PkgMicrosoft_Holographic_Remoting_OpenXr)\build\native\bin\x64\Desktop\*.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetPlatformIdentifier)'=='UAP'">
+		<Content Include="$(PkgMicrosoft_Holographic_Remoting_OpenXr)\build\native\bin\x64\uwp\*.dll">
+			<Link>%(Filename)%(Extension)</Link>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="$(PkgMicrosoft_Holographic_Remoting_OpenXr)\build\native\bin\x64\uwp\*.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
+	<Target Name="Name" BeforeTargets="BeforeBuild">
+		<Message Importance="high" Text="[StereoKit NuGet] TargetFrameworkIdentifier: $(TargetFrameworkIdentifier)"/>
+		<Message Importance="high" Text="[StereoKit NuGet] TargetPlatformIdentifier : $(TargetPlatformIdentifier)"/>
+	</Target>
+</Project>
