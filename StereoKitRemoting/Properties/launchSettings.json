@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "Run - Remote": {
+      "commandName": "Project",
+      "commandLineArgs": "-remote"
+    },
+    "Run - Local": {
+      "commandName": "Project"
+    }
+  }
+}

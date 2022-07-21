@@ -8,7 +8,23 @@ class Program
 {
 	static void Main(string[] args)
 	{
-		SK.AddStepper(new HolographicRemoting("192.168.1.231"));
+		// Adding the Holographic Remoting IStepper based on command line
+		// arguments allows us to create separate Launch Profiles for running
+		// locally vs. running with remoting via Visual Studio's UI! Note the
+		// "Run - Remote" and "Run - Local" options in the run bar.
+		const string defaultIp   = "192.168.1.231";
+		int          remotingArg = Array.IndexOf(args, "-remote");
+		if (remotingArg != -1)
+		{
+			// If the "-remote" option is followed by text that is not another
+			// "-" option, we can treat that as an IP address other than the
+			// default we have hard-coded here.
+			string ip = (remotingArg+1 < args.Length && args[remotingArg + 1].StartsWith("-") == false)
+				? args[remotingArg + 1]
+				: defaultIp;
+
+			SK.AddStepper(new HolographicRemoting(ip));
+		}
 
 		// Initialize StereoKit
 		SKSettings settings = new SKSettings {
