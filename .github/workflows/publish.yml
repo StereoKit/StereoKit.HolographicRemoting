@@ -1,0 +1,29 @@
+name: Build and Publish
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    env:
+      PROJECT: StereoKit.HolographicRemoting\StereoKit.HolographicRemoting.csproj
+      
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: 6.0.x
+    - name: Restore dependencies
+      run: dotnet restore $PROJECT
+    - name: Build
+      run: dotnet build --configuration Release --no-restore $PROJECT
+    - name: Test
+      run: dotnet test --no-build --verbosity normal $PROJECT
+    - name: Publish
+      if: github.event.pull_request.merged == true
+      run: nuget push **\*.nupkg -Source 'https://api.nuget.org/v3/index.json' -ApiKey ${{secrets.NUGET_API_KEY}}
