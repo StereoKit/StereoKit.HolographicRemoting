@@ -10,7 +10,7 @@
 		<PackageTags>StereoKit;HoloLens;Remoting</PackageTags>
 		<PackageIcon>images\StereoKitLogo64.png</PackageIcon>
 		<Title>StereoKit.HolographicRemoting</Title>
-		<Version>0.9.0</Version>
+		<Version>0.9.1</Version>
 		<Description>A StereoKit integration for Holographic Remoting, allows developers to run desktop apps on a HoloLens with only a network connection!</Description>
 		<Summary>A StereoKit integration for Holographic Remoting, allows developers to run desktop apps on a HoloLens with only a network connection!</Summary>
 	</PropertyGroup>
