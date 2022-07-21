@@ -11,14 +11,17 @@ namespace StereoKit.HolographicRemoting
 
 		private string _ipAddress;
 		private ushort _port;
+		private bool   _sendAudio;
+		private int    _maxBitrate;
 
-		private bool _enabled;
-		public  bool Enabled => _enabled;
+		public  bool Enabled { get; private set; }
 
-		public HolographicRemoting(string ipAddress, ushort port = 8265)
+		public HolographicRemoting(string ipAddress, ushort port = 8265, bool sendAudio = true, int maxBitrateKbps = 20000)
 		{
-			_ipAddress = ipAddress;
-			_port      = port;
+			_ipAddress  = ipAddress;
+			_port       = port;
+			_sendAudio  = sendAudio;
+			_maxBitrate = maxBitrateKbps;
 
 			if (SK.IsInitialized)
 				Log.Err("HolographicRemoting must be constructed before StereoKit is initialized!");
@@ -32,23 +35,23 @@ namespace StereoKit.HolographicRemoting
 			Environment.SetEnvironmentVariable("XR_RUNTIME_JSON", runtimePath);
 		}
 
-		public bool Initialize() => _enabled;
+		public bool Initialize() => Enabled;
 		public void Shutdown  () { }
 		public void Step      () { }
 
 		void OnPreCreateSession()
 		{
-			_enabled = Backend.OpenXR.ExtEnabled(remotingExtName);
-			if (!_enabled) return;
+			Enabled = Backend.OpenXR.ExtEnabled(remotingExtName);
+			if (!Enabled) return;
 
 			NativeAPI.LoadFunctions();
 
-			Log.Info($"Connecting to Holographic Remoting Player at {_ipAddress}...");
+			Log.Info($"Connecting to Holographic Remoting Player at {_ipAddress} : {_port} ...");
 
 			XrRemotingRemoteContextPropertiesMSFT contextProperties = new XrRemotingRemoteContextPropertiesMSFT();
 			contextProperties.type                        = XrStructureType.REMOTING_REMOTE_CONTEXT_PROPERTIES_MSFT;
-			contextProperties.enableAudio                 = 1;
-			contextProperties.maxBitrateKbps              = 20000;
+			contextProperties.enableAudio                 = _sendAudio ? 1 : 0;
+			contextProperties.maxBitrateKbps              = (uint)_maxBitrate;
 			contextProperties.videoCodec                  = XrRemotingVideoCodecMSFT.H265;
 			contextProperties.depthBufferStreamResolution = XrRemotingDepthBufferStreamResolutionMSFT.HALF;
 			if (NativeAPI.xrRemotingSetContextPropertiesMSFT(Backend.OpenXR.Instance, Backend.OpenXR.SystemId, contextProperties) != XrResult.Success)
