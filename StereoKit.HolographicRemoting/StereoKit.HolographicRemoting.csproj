@@ -2,35 +2,51 @@
 
 	<PropertyGroup>
 		<TargetFramework>netstandard2.0</TargetFramework>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<Authors>StereoKit</Authors>
+		<RepositoryUrl>https://github.com/StereoKit/StereoKit.HolographicRemoting</RepositoryUrl>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+		<PackageTags>StereoKit;HoloLens;Remoting</PackageTags>
+		<PackageIcon>images\StereoKitLogo64.png</PackageIcon>
+		<Title>StereoKit.HolographicRemoting</Title>
+		<Version>0.9.0</Version>
+		<Description>A StereoKit integration for Holographic Remoting, allows developers to run desktop apps on a HoloLens with only a network connection!</Description>
+		<Summary>A StereoKit integration for Holographic Remoting, allows developers to run desktop apps on a HoloLens with only a network connection!</Summary>
 	</PropertyGroup>
 
+	<PropertyGroup Condition="'$(GITHUB_ACTIONS)' == 'true'">
+		<Deterministic>true</Deterministic>
+		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+	</PropertyGroup>
+	
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Holographic.Remoting.OpenXr" Version="2.8.0" GeneratePathProperty="true" />
 		<PackageReference Include="StereoKit" Version="0.3.7-preview.2" />
 	</ItemGroup>
 
+	<!-- Files and DLLs that are needed for the NuGet package -->
+	<ItemGroup>
+		<None Include="images\StereoKitLogo64.png" Pack="true" PackagePath="images\" />
+	</ItemGroup>
+	
 	<ItemGroup Condition="'$(TargetPlatformIdentifier)'=='Windows'">
-		<Content Include="$(PkgMicrosoft_Holographic_Remoting_OpenXr)\build\native\bin\x64\Desktop\*.dll">
+		<None Include="$(PkgMicrosoft_Holographic_Remoting_OpenXr)\build\native\bin\x64\Desktop\*.dll">
 			<Link>%(Filename)%(Extension)</Link>
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
-		<Content Include="$(PkgMicrosoft_Holographic_Remoting_OpenXr)\build\native\bin\x64\Desktop\*.json">
+		</None>
+		<None Include="$(PkgMicrosoft_Holographic_Remoting_OpenXr)\build\native\bin\x64\Desktop\*.json">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
+		</None>
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(TargetPlatformIdentifier)'=='UAP'">
-		<Content Include="$(PkgMicrosoft_Holographic_Remoting_OpenXr)\build\native\bin\x64\uwp\*.dll">
+		<None Include="$(PkgMicrosoft_Holographic_Remoting_OpenXr)\build\native\bin\x64\uwp\*.dll">
 			<Link>%(Filename)%(Extension)</Link>
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
-		<Content Include="$(PkgMicrosoft_Holographic_Remoting_OpenXr)\build\native\bin\x64\uwp\*.json">
+		</None>
+		<None Include="$(PkgMicrosoft_Holographic_Remoting_OpenXr)\build\native\bin\x64\uwp\*.json">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
+		</None>
 	</ItemGroup>
-
-	<Target Name="Name" BeforeTargets="BeforeBuild">
-		<Message Importance="high" Text="[StereoKit NuGet] TargetFrameworkIdentifier: $(TargetFrameworkIdentifier)"/>
-		<Message Importance="high" Text="[StereoKit NuGet] TargetPlatformIdentifier : $(TargetPlatformIdentifier)"/>
-	</Target>
 </Project>
