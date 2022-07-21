@@ -28,6 +28,7 @@
 	<!-- Files and DLLs that are needed for the NuGet package -->
 	<ItemGroup>
 		<None Include="images\StereoKitLogo64.png" Pack="true" PackagePath="images\" />
+		<Content Pack="true" Include="$(BaseOutputPath)\$(Configuration)\netstandard2.0\*.pdb" PackagePath="lib\netstandard2.0\" />
 	</ItemGroup>
 	
 	<ItemGroup Condition="'$(TargetPlatformIdentifier)'=='Windows'">
