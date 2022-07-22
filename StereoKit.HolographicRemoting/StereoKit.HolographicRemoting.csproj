@@ -11,7 +11,7 @@
 		<PackageIcon>images\StereoKitLogo64.png</PackageIcon>
 		<EmbedUntrackedSources>true</EmbedUntrackedSources>
 		<Title>StereoKit.HolographicRemoting</Title>
-		<Version>0.9.3</Version>
+		<Version>0.9.4</Version>
 		<Description>A StereoKit integration for Holographic Remoting, allows developers to run desktop apps on a HoloLens with only a network connection!</Description>
 		<Summary>A StereoKit integration for Holographic Remoting, allows developers to run desktop apps on a HoloLens with only a network connection!</Summary>
 	</PropertyGroup>
@@ -29,7 +29,7 @@
 	<!-- Files and DLLs that are needed for the NuGet package -->
 	<ItemGroup>
 		<None Include="images\StereoKitLogo64.png" Pack="true" PackagePath="images\" />
-		<Content Pack="true" Include="$(BaseOutputPath)\$(Configuration)\netstandard2.0\*.pdb" PackagePath="lib\netstandard2.0\" />
+		<Content Pack="true" Include="$(IntermediateOutputPath)\StereoKit.HolographicRemoting.pdb" PackagePath="lib\netstandard2.0\" />
 	</ItemGroup>
 	
 	<ItemGroup Condition="'$(TargetPlatformIdentifier)'=='Windows'">
