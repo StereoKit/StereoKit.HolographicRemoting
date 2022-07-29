@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+	<ItemGroup Condition="'$(OS)'=='Windows_NT' and '$(TargetPlatformIdentifier)'!='UAP'">
+		<Content Include="$(MSBuildThisFileDirectory)native/bin/x64/Desktop/*.dll">
+			<Link>%(Filename)%(Extension)</Link>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="$(MSBuildThisFileDirectory)native/bin/x64/Desktop/*.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetPlatformIdentifier)'=='UAP'">
+		<Content Include="$(MSBuildThisFileDirectory)native/bin/x64/uwp/*.dll">
+			<Link>%(Filename)%(Extension)</Link>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="$(MSBuildThisFileDirectory)native/bin/x64/uwp/*.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
+	<Target Name="SKCopyRemotingFiles" BeforeTargets="BeforeBuild" Condition="'$(OS)'=='Windows_NT' or '$(TargetPlatformIdentifier)'=='UAP'">
+		<Message Importance="high" Text="[StereoKit.HolographicRemoting NuGet] Linking remoting files into the project."/>
+	</Target>
+
+</Project>
