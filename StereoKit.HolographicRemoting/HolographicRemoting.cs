@@ -57,24 +57,27 @@ namespace StereoKit.HolographicRemoting
 			contextProperties.videoCodec                  = XrRemotingVideoCodecMSFT.H265;
 			contextProperties.depthBufferStreamResolution = XrRemotingDepthBufferStreamResolutionMSFT.HALF;
 
+			IntPtr audioCaptureSettingsPtr = IntPtr.Zero;
 			if (_sendAudio && !_wideAudioCapture)
 			{
 				XrRemotingAudioOutputCaptureSettingsMSFT audioCaptureSettings = new XrRemotingAudioOutputCaptureSettingsMSFT();
 				audioCaptureSettings.type                   = XrStructureType.REMOTING_AUDIO_OUTPUT_CAPTURE_SETTINGS_MSFT;
 				audioCaptureSettings.audioOutputCaptureMode = XrRemotingAudioOutputCaptureModeMSFT.AUDIO_OUTPUT_CAPTURE_MODE_APP_ONLY_MSFT;
 				
-				int     size    = Marshal.SizeOf(typeof(XrRemotingAudioOutputCaptureSettingsMSFT));
-				IntPtr  memory  = Marshal.AllocHGlobal(size);
-				Marshal.StructureToPtr(audioCaptureSettings, memory, false);
+				int size                = Marshal.SizeOf(typeof(XrRemotingAudioOutputCaptureSettingsMSFT));
+				audioCaptureSettingsPtr = Marshal.AllocHGlobal(size);
+				Marshal.StructureToPtr(audioCaptureSettings, audioCaptureSettingsPtr, false);
 
-				contextProperties.next = memory;
-				Marshal.FreeHGlobal(memory);
+				contextProperties.next  = audioCaptureSettingsPtr;
 			}
 
 			if (NativeAPI.xrRemotingSetContextPropertiesMSFT(Backend.OpenXR.Instance, Backend.OpenXR.SystemId, contextProperties) != XrResult.Success)
 			{
 				Log.Warn("xrRemotingSetContextPropertiesMSFT failed!");
 			}
+
+			if (_sendAudio && !_wideAudioCapture)
+				Marshal.FreeHGlobal(audioCaptureSettingsPtr);
 
 			XrRemotingConnectInfoMSFT connectInfo = new XrRemotingConnectInfoMSFT();
 			connectInfo.type             = XrStructureType.REMOTING_CONNECT_INFO_MSFT;
