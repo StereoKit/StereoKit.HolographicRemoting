@@ -76,8 +76,7 @@ namespace StereoKit.HolographicRemoting
 				Log.Warn("xrRemotingSetContextPropertiesMSFT failed!");
 			}
 
-			if (_sendAudio && !_wideAudioCapture)
-				Marshal.FreeHGlobal(audioCaptureSettingsPtr);
+			Marshal.FreeHGlobal(audioCaptureSettingsPtr);
 
 			XrRemotingConnectInfoMSFT connectInfo = new XrRemotingConnectInfoMSFT();
 			connectInfo.type             = XrStructureType.REMOTING_CONNECT_INFO_MSFT;
