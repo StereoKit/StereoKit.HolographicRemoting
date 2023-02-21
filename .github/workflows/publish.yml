@@ -24,5 +24,4 @@ jobs:
     - name: Test
       run: dotnet test --no-build --verbosity normal $PROJECT
     - name: Publish
-      if: github.event.pull_request.merged == true
       run: nuget push **\*.nupkg -Source 'https://api.nuget.org/v3/index.json' -ApiKey ${{secrets.NUGET_API_KEY}}
