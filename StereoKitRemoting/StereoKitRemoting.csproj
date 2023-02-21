@@ -7,7 +7,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\StereoKit.HolographicRemoting\StereoKit.HolographicRemoting.csproj" />
-    <PackageReference Include="StereoKit" Version="0.3.7-preview.2" />
+    <PackageReference Include="StereoKit" Version="0.3.7-preview.9" />
   </ItemGroup>
   <Import Project="$(ProjectDir)..\StereoKit.HolographicRemoting\StereoKit.HolographicRemoting.targets" />
 
